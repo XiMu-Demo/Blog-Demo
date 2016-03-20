@@ -15,4 +15,6 @@
 @property (copy,nonatomic) NSString *userContentString;
 @property (strong ,nonatomic) UIImage *userContentImage;
 
+@property (assign, nonatomic)CGFloat cellHeight;
+
 @end

@@ -34,8 +34,10 @@ static NSString *const CellId = @"cell";
     
     [self.tableView reloadData];
     
+    /*iOS 8自动计算（方法一代码）
     self.tableView.estimatedRowHeight = 80.0f;
-    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.rowHeight = UITableViewAutomaticDimension
+     */
 }
 
 // 重复字符串N次
@@ -62,9 +64,33 @@ static NSString *const CellId = @"cell";
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    
-//    
-//}
+/*方法2代码
+
+    static TableViewCell *Cell;
+    static dispatch_once_t onceToken;
+    //必须使用
+    dispatch_once(&onceToken, ^{
+        Cell = [tableView dequeueReusableCellWithIdentifier:CellId];
+    });
+
+   TableViewModel *model = self.modelArray[indexPath.row];
+    Cell.model = model;
+    // 根据当前数据，计算Cell的高度，注意+1是contentview和cell之间的分割线高度
+    model.cellHeight = [Cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height +1.0f;
+    
+   return model.cellHeight;
+ */
+    
+    //方法3代码
+   TableViewModel *model =  self.modelArray[indexPath.row];
+    return model.cellHeight;
+
+}
+//方法2代码
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 112.0f;
+}
+
 @end
